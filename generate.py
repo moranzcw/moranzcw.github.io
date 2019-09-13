@@ -1,4 +1,12 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# 使用方法 python markdown_convert.py filename
 
+import sys
+import markdown
+import codecs
+
+head = '''
 <!doctype html>
 <html>
 <head>
@@ -495,18 +503,29 @@ header, .context-menu, .megamenu-content, footer{
  .typora-export li, .typora-export p, .typora-export,  .footnote-line {white-space: normal;} 
 </style>
 </head>
+'''
 
+body_head = '''
 <body class='typora-export' >
 <div  id='write'  class = 'is-mac'>
-<h1>moranzcw</h1>
-<p><a href="https://github.com/moranzcw/Computer-Networking-A-Top-Down-Approach-NOTES">Computer Networking Notes</a>: 《计算机网络：自顶向下方法》编程作业，Wireshark实验文档的翻译和解答。</p>
-<p><a href="https://github.com/moranzcw/CSAPP_Lab">CSAPP Lab</a>: 《深入理解计算机系统》Lab解析。</p>
-<p><a href="https://github.com/moranzcw/Zhihu-Spider">Zhihu Spider</a>: 知乎用户信息爬虫程序。</p>
-<p><a href="https://github.com/moranzcw/LeetCode-NOTES">LeetCode Notes</a>: LeetCode题解。</p>
-<hr />
-<p>如果您有任何问题或建议，请联系 moranzcw@gmail.com</p>
-<hr />
-<p>Last update: September 13, 2019</p>
+'''
+
+body_footer = '''
 </div>
 </body>
 </html>
+'''
+
+def generate(filename):
+    in_file = "%s.md" % (filename)
+    out_file = "%s.html" % (filename)
+
+    input_file = codecs.open(in_file, mode="r", encoding="utf-8")
+    text = input_file.read()
+    html = markdown.markdown(text)
+
+    output_file = codecs.open(out_file, "w",encoding="utf-8",errors="xmlcharrefreplace")
+    output_file.write(head + body_head + html + body_footer)
+
+if __name__ == "__main__":
+    generate("index")
